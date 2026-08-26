@@ -14,9 +14,43 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    <<flux:sidebar.group :heading="__('PinoCrew')" class="grid">
+                    <flux:sidebar.item
+                        icon="home"
+                        :href="route('dashboard')"
+                        :current="request()->routeIs('dashboard')"
+                        wire:navigate
+                    >
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                        icon="users"
+                        :href="route('crew.index')"
+                        :current="request()->routeIs('crew.*')"
+                        wire:navigate
+                    >
+                        {{ __('Crew') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                        icon="calendar-days"
+                        :href="route('shifts.index')"
+                        :current="request()->routeIs('shifts.*')"
+                        wire:navigate
+                    >
+                        {{ __('Diensten') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                        icon="calendar"
+                        :href="route('events.index')"
+                        :current="request()->routeIs('events.*')"
+                        wire:navigate
+                    >
+                        {{ __('Evenementen') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
