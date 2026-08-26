@@ -10,9 +10,9 @@ Route::prefix('{current_team}')
     ->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
 
-        Route::livewire('crew', 'pages::crew.index')->name('crew.index');
-        Route::livewire('events', 'pages::events.index')->name('events.index');
-        Route::livewire('planning', 'pages::planning.index')->name('planning.index');
+        Route::view('crew', 'crew')->name('crew.index');
+        Route::view('shifts', 'shifts')->name('shifts.index');
+        Route::view('events', 'events')->name('events.index');
     });
 
 require __DIR__.'/settings.php';
