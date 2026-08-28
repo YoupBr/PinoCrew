@@ -5,14 +5,37 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
+Route::livewire('inschrijven', 'pages::signup.index')
+    ->name('signup');
+
+Route::livewire('inschrijven/{shift}', 'pages::signup.show')
+    ->name('signup.show');
+
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
+        Route::livewire('dashboard', 'pages::dashboard')
+             ->name('dashboard');
 
-        Route::view('crew', 'crew')->name('crew.index');
-        Route::view('shifts', 'shifts')->name('shifts.index');
+        Route::livewire('crew', 'pages::crew.index')
+    ->name('crew.index');
+
+        Route::livewire('shifts', 'pages::shifts.index')
+    ->name('shifts.index');
+    
         Route::view('events', 'events')->name('events.index');
     });
+
+    Route::get('/dashboard', function () {
+    $user = request()->user();
+
+    if (! $user?->currentTeam) {
+        abort(403, 'Je bent nog niet aan een PinoCrew-team gekoppeld.');
+    }
+
+    return redirect()->route('dashboard', [
+        'current_team' => $user->currentTeam->slug,
+    ]);
+})->middleware(['auth', 'verified']);
 
 require __DIR__.'/settings.php';

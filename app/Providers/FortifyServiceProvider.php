@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\LoginResponse;
 use App\Http\Responses\PasskeyLoginResponse;
@@ -20,17 +21,28 @@ use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContr
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register application services.
      */
     public function register(): void
     {
-        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
-        $this->app->singleton(PasskeyLoginResponseContract::class, PasskeyLoginResponse::class);
-        $this->app->singleton(TwoFactorLoginResponseContract::class, TwoFactorLoginResponse::class);
+        $this->app->singleton(
+            LoginResponseContract::class,
+            LoginResponse::class
+        );
+
+        $this->app->singleton(
+            PasskeyLoginResponseContract::class,
+            PasskeyLoginResponse::class
+        );
+
+        $this->app->singleton(
+            TwoFactorLoginResponseContract::class,
+            TwoFactorLoginResponse::class
+        );
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap application services.
      */
     public function boot(): void
     {
@@ -44,6 +56,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureActions(): void
     {
+        Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
     }
 
@@ -52,12 +65,29 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn (Request $request) => view('pages::auth.login', [
-            'teamInvitation' => $this->teamInvitation($request),
-        ]));
-        Fortify::twoFactorChallengeView(fn () => view('pages::auth.two-factor-challenge'));
-        Fortify::resetPasswordView(fn () => view('pages::auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn () => view('pages::auth.forgot-password'));
+        Fortify::loginView(
+            fn (Request $request) => view('pages::auth.login', [
+                'teamInvitation' => $this->teamInvitation($request),
+            ])
+        );
+
+        Fortify::registerView(
+            fn () => view('pages::auth.register')
+        );
+
+        Fortify::twoFactorChallengeView(
+            fn () => view('pages::auth.two-factor-challenge')
+        );
+
+        Fortify::resetPasswordView(
+            fn (Request $request) => view('pages::auth.reset-password', [
+                'request' => $request,
+            ])
+        );
+
+        Fortify::requestPasswordResetLinkView(
+            fn () => view('pages::auth.forgot-password')
+        );
     }
 
     /**
@@ -66,11 +96,17 @@ class FortifyServiceProvider extends ServiceProvider
     private function configureRateLimiting(): void
     {
         RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+            return Limit::perMinute(5)->by(
+                $request->session()->get('login.id')
+            );
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(
+                Str::lower($request->input(Fortify::username()))
+                .'|'
+                .$request->ip()
+            );
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -79,7 +115,9 @@ class FortifyServiceProvider extends ServiceProvider
             $credentialId = $request->input('credential.id');
 
             return Limit::perMinute(10)->by(
-                ($credentialId ?: $request->session()->getId()).'|'.$request->ip(),
+                ($credentialId ?: $request->session()->getId())
+                .'|'
+                .$request->ip()
             );
         });
     }
@@ -101,9 +139,11 @@ class FortifyServiceProvider extends ServiceProvider
             ->with('team')
             ->where('code', $invitationCode)
             ->whereNull('accepted_at')
-            ->where(fn ($query) => $query
-                ->whereNull('expires_at')
-                ->orWhere('expires_at', '>=', now()))
+            ->where(function ($query) {
+                $query
+                    ->whereNull('expires_at')
+                    ->orWhere('expires_at', '>=', now());
+            })
             ->first();
 
         if (! $invitation) {

@@ -11,130 +11,84 @@
 
 <body class="min-h-screen bg-[#071426] text-white antialiased">
 
-    <div class="relative min-h-screen overflow-hidden">
+    <div class="relative flex min-h-screen flex-col overflow-hidden">
 
-        {{-- Subtle background glow --}}
         <div
             class="pointer-events-none absolute left-1/2 top-[-300px] h-[700px] w-[900px]
                    -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]"
         ></div>
 
-        {{-- Navigation --}}
-        <header class="relative z-10">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-7 lg:px-8">
+        <header class="absolute inset-x-0 top-0 z-20">
+    <div class="mx-auto flex max-w-7xl items-center justify-end gap-3 px-6 py-6 lg:px-8">
 
-                <a href="{{ route('home') }}" class="flex items-center gap-3">
-                    <div class="flex h-19 w-19 items-center justify-center rounded-xl bg-blue-600 font-bold shadow-lg shadow-blue-600/20">
-                        <img src="{{ asset('img/logo.png') }}" alt="PinoCrew" class="h-14 w-14" />
-                    </div>
+        @auth
+            @if (auth()->user()->currentTeam)
+                <a href="{{ route('dashboard', [
+                     'current_team' => auth()->user()->currentTeam->slug,
+                    ]) }}"
+                    class="rounded-lg border border-white/15 bg-white/5 px-4 py-2
+                           text-sm font-medium text-white/80 transition
+                           hover:bg-white/10 hover:text-white">Beheer</a>
+            @endif
 
-                    <span class="text-lg font-semibold tracking-tight">
-                        PinoCrew
-                    </span>
-                </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
 
-                <div>
-                    @auth
-                        @if (auth()->user()->currentTeam)
-                            <a
-                                href="{{ route('dashboard', [
-                                    'current_team' => auth()->user()->currentTeam->slug,
-                                ]) }}"
-                                class="inline-flex items-center rounded-xl bg-white px-4 py-2.5
-                                       text-sm font-semibold text-[#071426]
-                                       transition hover:bg-blue-50"
-                            >
-                                Naar dashboard
-                            </a>
-                        @endif
-                    @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="inline-flex items-center rounded-xl border border-white/15
-                                   bg-white/5 px-4 py-2.5 text-sm font-medium text-white
-                                   backdrop-blur transition hover:bg-white/10"
-                        >
-                            Inloggen
-                        </a>
-                    @endauth
-                </div>
+                <button
+                    type="submit"
+                    class="rounded-lg border border-white/15 bg-white/5 px-4 py-2
+                           text-sm font-medium text-white/80 transition
+                           hover:bg-white/10 hover:text-white">
+                    Uitloggen
+                </button>
+            </form>
+        @else
+            <a href="{{ route('login') }}"
+                class="rounded-lg border border-white/15 bg-white/5 px-4 py-2
+                       text-sm font-medium text-white/80 transition
+                       hover:bg-white/10 hover:text-white">Inloggen</a>
+        @endauth
 
-            </div>
-        </header>
+    </div>
+</header>
 
-        {{-- Hero --}}
-        <main class="relative z-10">
-            <div class="mx-auto flex min-h-[calc(100vh-170px)] max-w-7xl items-center px-6 pb-24 pt-16 lg:px-8">
+    <main class="relative z-10 flex flex-1">
+         <div class="mx-auto flex w-full max-w-7xl items-center px-6 py-16 lg:px-8">
 
-                <div class="max-w-4xl">
+           <div class="mx-auto max-w-4xl text-center">
 
-                    <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-400/20
-                                bg-blue-400/10 px-3.5 py-1.5 text-sm font-medium text-blue-200">
-                        <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
-                        Vrijwilligersplatform van Pinoké
-                    </div>
+            <a href="{{ route('home') }}" class="mb-8 inline-block">
+                <img
+                    src="{{ asset('img/logo.png') }}"
+                    alt="Pinoké logo"
+                    class="mx-auto h-36 w-auto object-contain"/> </a>
 
-                    <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                        Samen maken we
-                        <span class="text-blue-400">Pinoké</span>
-                        mogelijk.
-                    </h1>
+            <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+                Samen maken we
+                <span class="text-blue-400">Pinoké</span>
+                mogelijk. </h1>
 
-                    <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
-                        Eén centrale plek voor de crew van Pinoké.
-                        Bekijk evenementen, schrijf je in voor diensten
-                        en blijf op de hoogte van de planning.
-                    </p>
+                    <p class="mt-6 text-lg leading-8 text-white/70 sm:text-xl sm:leading-9">
+                        De plek voor de vrijwilligers van Pinoké om zich aan te melden voor
+                    de opbouw van onze PinokéDome!</p>
 
-                    <div class="mt-10 flex flex-wrap items-center gap-4">
+                    <div class="mt-10 flex items-center justify-center gap-x-6">
 
-                        @guest
-                            <a
-                                href="{{ route('login') }}"
+                            <a href="{{ route('signup') }}"
                                 class="inline-flex items-center gap-2 rounded-xl bg-blue-600
                                        px-5 py-3 text-sm font-semibold text-white
                                        shadow-lg shadow-blue-600/20 transition
-                                       hover:bg-blue-500"
-                            >
-                                Inloggen bij PinoCrew
+                                       hover:bg-blue-500">
+                                Aanmelden voor een dienst
 
-                                <svg
-                                    class="h-4 w-4"
+                                <svg class="h-4 w-4"
                                     viewBox="0 0 20 20"
                                     fill="none"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                >
+                                    stroke-width="2" >
                                     <path d="M4 10h12M11 5l5 5-5 5"/>
                                 </svg>
                             </a>
-                        @endguest
-
-                        @auth
-                            @if (auth()->user()->currentTeam)
-                                <a
-                                    href="{{ route('dashboard', [
-                                        'current_team' => auth()->user()->currentTeam->slug,
-                                    ]) }}"
-                                    class="inline-flex items-center gap-2 rounded-xl bg-blue-600
-                                           px-5 py-3 text-sm font-semibold text-white
-                                           shadow-lg shadow-blue-600/20 transition
-                                           hover:bg-blue-500"
-                                >
-                                    Open PinoCrew
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        viewBox="0 0 20 20"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
-                                        <path d="M4 10h12M11 5l5 5-5 5"/>
-                                    </svg>
-                                </a>
-                            @endif
-                        @endauth
 
                     </div>
 

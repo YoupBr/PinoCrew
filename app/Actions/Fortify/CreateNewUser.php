@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Actions\Fortify;
+
+use App\Enums\TeamRole;
+use App\Models\HockeyTeam;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+
+class CreateNewUser implements CreatesNewUsers
+{
+    public function create(array $input): User
+    {
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+
+            'password' => [
+                'required',
+                'string',
+                Password::default(),
+                'confirmed',
+            ],
+        ])->validate();
+
+        return DB::transaction(function () use ($input) {
+            $user = User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+            ]);
+
+            $pinoke = Team::where('slug', 'pinoke')->firstOrFail();
+
+            $pinoke->members()->syncWithoutDetaching([
+                $user->id => [
+                    'role' => TeamRole::Admin->value,
+                ],
+            ]);
+
+            $user->update([
+                'current_team_id' => $pinoke->id,
+            ]);
+
+            return $user;
+                    });
+                }
+}

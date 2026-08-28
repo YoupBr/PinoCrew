@@ -162,9 +162,11 @@ return [
 
     'features' => [
         Features::resetPasswords(),
+        Features::registration(),
+        Features::emailVerification(),
         Features::twoFactorAuthentication([
             'confirm' => true,
-            'confirmPassword' => false,
+            'confirmPassword' => true,
             // 'window' => 0
         ]),
         Features::passkeys([
