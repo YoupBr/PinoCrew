@@ -27,6 +27,7 @@
                 <flux:sidebar.group :heading="__('PinoCrew')" class="grid">
 
                     <flux:sidebar.item
+                     {{-- Main Dashboard --}}
                         icon="home"
                         :href="route('dashboard', [
                             'current_team' => request()->route('current_team'),
@@ -37,6 +38,7 @@
                     </flux:sidebar.item>
 
                     <flux:sidebar.item
+                    {{-- Crew --}}
                         icon="users"
                         :href="route('crew.index', [
                             'current_team' => request()->route('current_team'),
@@ -48,6 +50,7 @@
                     </flux:sidebar.item>
 
                     <flux:sidebar.item
+                    {{-- Diensten --}}
                         icon="calendar-days"
                         :href="route('shifts.index', [
                             'current_team' => request()->route('current_team'),
@@ -56,6 +59,18 @@
                         wire:navigate>
 
                         {{ __('Diensten') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                    {{-- Mail --}}
+                        icon="envelope"
+                        :href="route('mail.index', [
+                            'current_team' => request()->route('current_team'),
+                        ])"
+                        :current="request()->routeIs('mail.*')"
+                        wire:navigate>
+
+                        {{ __('Mail') }}
                     </flux:sidebar.item>
 
                 </flux:sidebar.group>

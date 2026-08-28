@@ -3,9 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Enums\TeamRole;
-use App\Models\HockeyTeam;
 use App\Models\Team;
 use App\Models\User;
+use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,11 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
 
             'email' => [
                 'required',
@@ -34,6 +38,19 @@ class CreateNewUser implements CreatesNewUsers
                 Password::default(),
                 'confirmed',
             ],
+
+            'invite_code' => [
+                'required',
+                'string',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (! hash_equals(
+                        (string) config('app.invite_code'),
+                        (string) $value
+                    )) {
+                        $fail('De uitnodigingscode is ongeldig.');
+                    }
+                },
+            ],
         ])->validate();
 
         return DB::transaction(function () use ($input) {
@@ -43,7 +60,8 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => Hash::make($input['password']),
             ]);
 
-            $pinoke = Team::where('slug', 'pinoke')->firstOrFail();
+            $pinoke = Team::where('slug', 'pinoke')
+                ->firstOrFail();
 
             $pinoke->members()->syncWithoutDetaching([
                 $user->id => [
@@ -56,6 +74,6 @@ class CreateNewUser implements CreatesNewUsers
             ]);
 
             return $user;
-                    });
-                }
+        });
+    }
 }

@@ -1,11 +1,16 @@
 <x-layouts::auth :title="__('Registreren')">
     <div class="flex flex-col gap-6">
+
         <x-auth-header
             :title="__('Aanmelden bij PinoCrew')"
-            :description="__('Maak een account aan en kies het team dat je begeleidt.')"
+            :description="__('Maak een account aan met je uitnodigingscode.')"
         />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
+        <form
+            method="POST"
+            action="{{ route('register.store') }}"
+            class="flex flex-col gap-5"
+        >
             @csrf
 
             <flux:input
@@ -29,25 +34,6 @@
                 placeholder="naam@voorbeeld.nl"
             />
 
-            <flux:select
-                name="hockey_team_id"
-                :label="__('Team')"
-                required
-            >
-                <flux:select.option value="">
-                    Kies je team
-                </flux:select.option>
-
-                @foreach (\App\Models\HockeyTeam::orderBy('name')->get() as $team)
-                    <flux:select.option
-                        :value="$team->id"
-                        :selected="old('hockey_team_id') == $team->id"
-                    >
-                        {{ $team->name }}
-                    </flux:select.option>
-                @endforeach
-            </flux:select>
-
             <flux:input
                 name="password"
                 :label="__('Wachtwoord')"
@@ -66,6 +52,16 @@
                 viewable
             />
 
+            <flux:input
+                name="invite_code"
+                :label="__('Uitnodigingscode')"
+                :value="old('invite_code')"
+                type="text"
+                required
+                autocomplete="off"
+                placeholder="Voer je uitnodigingscode in"
+            />
+
             <flux:button
                 variant="primary"
                 type="submit"
@@ -78,9 +74,13 @@
         <p class="text-center text-sm text-zinc-500">
             Heb je al een account?
 
-            <flux:link :href="route('login')" wire:navigate>
+            <flux:link
+                :href="route('login')"
+                wire:navigate
+            >
                 Inloggen
             </flux:link>
         </p>
+
     </div>
 </x-layouts::auth>

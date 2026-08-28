@@ -14,15 +14,24 @@ Route::livewire('inschrijven/{shift}', 'pages::signup.show')
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
-        Route::livewire('dashboard', 'pages::dashboard')
-             ->name('dashboard');
 
+    // Dashboard in beheer
+        Route::livewire('dashboard', 'pages::dashboard')
+    ->name('dashboard');
+
+    // Crew in beheer
         Route::livewire('crew', 'pages::crew.index')
     ->name('crew.index');
 
+    // Shifts in beheer
         Route::livewire('shifts', 'pages::shifts.index')
     ->name('shifts.index');
-    
+
+    // Mail in beheer
+        Route::livewire('mail', 'pages::mail.index')
+    ->name('mail.index');
+
+    // Mag later waarschijnlijk weg.
         Route::view('events', 'events')->name('events.index');
     });
 

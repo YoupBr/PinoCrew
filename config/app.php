@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*INVITE CODE*/
+
+    'invite_code' => env('PINOCREW_INVITE_CODE'),
+
 ];
