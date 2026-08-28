@@ -14,8 +14,8 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
 
     public string $name = '';
     public string $email = '';
-    public string $hockey_team_id = '';
     public string $phone = '';
+    public string $hockey_team_id = '';
 
     public bool $submitted = false;
 
@@ -51,7 +51,10 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
     public function signup(): void
     {
         if ($this->isFull) {
-            $this->addError('capacity', 'Deze dienst is inmiddels vol.');
+            $this->addError(
+                'capacity',
+                'Deze dienst is inmiddels vol.'
+            );
 
             return;
         }
@@ -67,6 +70,12 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                 'required',
                 'email',
                 'max:255',
+            ],
+
+            'phone' => [
+                'required',
+                'string',
+                'max:30',
             ],
 
             'hockey_team_id' => [
@@ -85,30 +94,45 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
         ]);
 
         $this->submitted = true;
+
+        $this->reset([
+            'name',
+            'email',
+            'phone',
+            'hockey_team_id',
+        ]);
     }
 };
-?>
+    ?>
 
 <div class="min-h-screen bg-slate-50">
+
     {{-- Header --}}
     <header class="border-b border-slate-200 bg-white">
-        <div class="mx-auto flex max-w-3xl items-center justify-center px-0 py-2">
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                    <img src="{{ asset('img/logoblauw.png') }}" alt="Pinoké logo" class="h-16 w-auto object-contain"/></a>
+        <div class="mx-auto flex max-w-3xl items-center justify-center px-6 py-3">
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('img/logoblauw.png') }}"
+                     alt="Pinoké logo"
+                     style="height: 64px; width: auto;"></a>
         </div>
     </header>
 
-       <main class="mx-auto max-w-3xl px-6 py-10">
-        <a href="{{ route('signup') }}"
+    <main class="mx-auto max-w-3xl px-6 py-10">
+
+        {{-- Terug --}}
+        <a  href="{{ route('signup') }}"
             wire:navigate
-            class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-500">
+            class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition hover:text-blue-500">
             ← Terug naar alle diensten
         </a>
 
+        {{-- Dienstinformatie --}}
         <div class="mt-6 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-sm">
+
             <div class="bg-gradient-to-br from-blue-600 to-blue-500 px-6 py-7 text-white sm:px-8">
+
                 <span class="text-sm font-semibold text-blue-100">
-                    {{ $shift->date->translatedFormat('l j F') }}
+                    {{ $shift->date->translatedFormat('l j F Y') }}
                 </span>
 
                 <h1 class="mt-2 text-3xl font-bold tracking-tight">
@@ -116,19 +140,25 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                 </h1>
 
                 <div class="mt-5 flex flex-wrap gap-3 text-sm">
-                    <span class="rounded-full bg-white/10 px-3 py-1.5">
-                        {{ substr($shift->starts_at, 0, 5) }}
-                        @if ($shift->ends_at)
-                            – {{ substr($shift->ends_at, 0, 5) }}
-                        @endif
-                    </span>
+
+                    @if ($shift->starts_at)
+                        <span class="rounded-full bg-white/10 px-3 py-1.5">
+                            {{ substr($shift->starts_at, 0, 5) }}
+
+                            @if ($shift->ends_at)
+                                – {{ substr($shift->ends_at, 0, 5) }}
+                            @endif
+                        </span>
+                    @endif
 
                     @if ($shift->location)
                         <span class="rounded-full bg-white/10 px-3 py-1.5">
                             {{ $shift->location }}
                         </span>
                     @endif
+
                 </div>
+
             </div>
 
             @if ($shift->description)
@@ -138,39 +168,140 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                     </p>
                 </div>
             @endif
-        <div class="mt-10 rounded-3xl border border-slate-300 bg-white p-6 shadow-lg shadow-slate-200/60 sm:p-8">
-            <div class="border-b border-slate-200 pb-5">
-                <h2 class="text-2xl font-bold text-slate-900">
-                    Aanmelden voor deze dienst
-                </h2>
 
-                <p class="mt-2 text-sm leading-6 text-slate-700">
-                    Vul hieronder je gegevens in en kies namens welk team je helpt.
-                </p>
-            </div>
+        </div>
 
-            @error('capacity')
-                <div class="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800">
-                    {{ $message }}
+        {{-- Inschrijfkaart --}}
+        <div class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/60 sm:p-8">
+
+            @if ($submitted)
+
+                {{-- Succes --}}
+                <div class="py-6 text-center">
+
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+                        <svg
+                            class="h-7 w-7 text-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2.5">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4.5 12.75l6 6 9-13.5"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="mt-5 text-2xl font-bold text-slate-900">
+                        Inschrijving gelukt!
+                    </h2>
+
+                    <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">
+                        Bedankt voor je aanmelding voor
+                        <strong>{{ $shift->title }}</strong>.
+                        Je staat nu geregistreerd voor deze dienst.
+                    </p>
+
+                    <div class="mt-6 rounded-2xl bg-slate-50 p-5 text-left">
+
+                        <div class="text-sm font-semibold text-slate-900">
+                            {{ $shift->date->translatedFormat('l j F Y') }}
+                        </div>
+
+                        @if ($shift->starts_at)
+                            <div class="mt-1 text-sm text-slate-600">
+                                {{ substr($shift->starts_at, 0, 5) }}
+
+                                @if ($shift->ends_at)
+                                    – {{ substr($shift->ends_at, 0, 5) }}
+                                @endif
+                            </div>
+                        @endif
+
+                        @if ($shift->location)
+                            <div class="mt-1 text-sm text-slate-600">
+                                {{ $shift->location }}
+                            </div>
+                        @endif
+
+                    </div>
+
+                    <a  href="{{ route('signup') }}"
+                        wire:navigate
+                        class="mt-7 inline-flex items-center justify-center rounded-xl
+                            bg-blue-600 px-5 py-3 text-sm font-semibold text-white
+                            transition hover:bg-blue-500">
+                        Bekijk andere diensten</a>
+
                 </div>
-            @enderror
 
-            @if ($this->isFull)
-                <div class="mt-6 rounded-xl border border-slate-300 bg-slate-100 p-5">
-                    <p class="font-semibold text-slate-900">
+            @elseif ($this->isFull)
+
+                {{-- Vol --}}
+                <div class="py-6 text-center">
+
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+                        <svg
+                            class="h-7 w-7 text-slate-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="mt-5 text-2xl font-bold text-slate-900">
                         Deze dienst is vol
+                    </h2>
+
+                    <p class="mt-2 text-sm text-slate-600">
+                        Er zijn momenteel geen plekken meer beschikbaar voor deze dienst.
                     </p>
 
-                    <p class="mt-1 text-sm text-slate-700">
-                        Er zijn momenteel geen plekken meer beschikbaar.
-                    </p>
+                    <a  href="{{ route('signup') }}"
+                        wire:navigate
+                        class="mt-6 inline-flex items-center justify-center rounded-xl
+                            border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700
+                            transition hover:bg-slate-50">
+                        Bekijk andere diensten
+                    </a>
+
                 </div>
+
             @else
+
+                {{-- Formulier --}}
+                <div class="border-b border-slate-200 pb-5">
+
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        Aanmelden voor deze dienst
+                    </h2>
+
+                    <p class="mt-2 text-sm leading-6 text-slate-600">
+                        Vul hieronder je gegevens in en kies namens welk team je helpt.
+                    </p>
+
+                </div>
+
+                @error('capacity')
+                    <div class="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800">
+                        {{ $message }}
+                    </div>
+                @enderror
+
                 <form wire:submit="signup" class="mt-7 space-y-6">
+
+                    {{-- Naam --}}
                     <div>
-                        <label for="name" class="mb-2 block text-sm font-semibold text-slate-900">
-                            Naam
-                        </label>
+
+                        <label for="name" class="mb-2 block text-sm font-semibold text-slate-900">Naam </label>
 
                         <input
                             id="name"
@@ -184,12 +315,19 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                                 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
 
                         @error('name')
-                            <p class="mt-2 text-sm font-medium text-red-600">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-medium text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
+
                     </div>
 
+                    {{-- E-mail --}}
                     <div>
-                        <label for="email" class="mb-2 block text-sm font-semibold text-slate-900">
+
+                        <label
+                            for="email"
+                            class="mb-2 block text-sm font-semibold text-slate-900">
                             E-mailadres
                         </label>
 
@@ -205,12 +343,19 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                                 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
 
                         @error('email')
-                            <p class="mt-2 text-sm font-medium text-red-600">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-medium text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
+
                     </div>
 
+                    {{-- Telefoon --}}
                     <div>
-                        <label for="phone" class="mb-2 block text-sm font-semibold text-slate-900">
+
+                        <label
+                            for="phone"
+                            class="mb-2 block text-sm font-semibold text-slate-900">
                             Telefoonnummer
                         </label>
 
@@ -219,6 +364,7 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                             type="tel"
                             wire:model="phone"
                             autocomplete="tel"
+                            inputmode="tel"
                             placeholder="06 12345678"
                             class="block w-full rounded-xl border border-slate-300 bg-white
                                 px-4 py-3 text-slate-950 placeholder:text-slate-400
@@ -226,12 +372,19 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                                 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
 
                         @error('phone')
-                            <p class="mt-2 text-sm font-medium text-red-600">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-medium text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
+
                     </div>
 
+                    {{-- Team --}}
                     <div>
-                        <label for="hockey_team_id" class="mb-2 block text-sm font-semibold text-slate-900">
+
+                        <label
+                            for="hockey_team_id"
+                            class="mb-2 block text-sm font-semibold text-slate-900">
                             Namens welk team help je?
                         </label>
 
@@ -241,7 +394,9 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                             class="block w-full rounded-xl border border-slate-300 bg-white
                                 px-4 py-3 text-slate-950 outline-none transition
                                 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
-                            <option value="">Kies je team</option>
+                            <option value="">
+                                Kies je team
+                            </option>
 
                             @foreach ($this->hockeyTeams as $team)
                                 <option value="{{ $team->id }}">
@@ -251,11 +406,16 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                         </select>
 
                         @error('hockey_team_id')
-                            <p class="mt-2 text-sm font-medium text-red-600">{{ $message }}</p>
+                            <p class="mt-2 text-sm font-medium text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
+
                     </div>
 
+                    {{-- Submit --}}
                     <div class="border-t border-slate-200 pt-6">
+
                         <button
                             type="submit"
                             wire:loading.attr="disabled"
@@ -265,7 +425,7 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                                 shadow-lg shadow-blue-600/20 transition
                                 hover:bg-blue-500
                                 focus:outline-none focus:ring-4 focus:ring-blue-200
-                                disabled:opacity-60">
+                                disabled:cursor-not-allowed disabled:opacity-60">
                             <span wire:loading.remove wire:target="signup">
                                 Inschrijving bevestigen
                             </span>
@@ -274,10 +434,15 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                                 Bezig met inschrijven...
                             </span>
                         </button>
+
                     </div>
-                    </form>
+
+                </form>
+
             @endif
+
         </div>
-        </div>
+
     </main>
+
 </div>
