@@ -2,47 +2,41 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
+    <title>Bevestiging PinoCrew</title>
 </head>
+<body style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.6;">
+    <p>Hoi {{ $signup->name }},</p>
 
-<body style="margin:0; padding:0; background:#f8fafc; font-family:Arial, sans-serif;">
+    <p>
+        Bedankt voor je inschrijving bij PinoCrew! Je inschrijving is succesvol ontvangen.
+    </p>
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc; padding:30px 15px;">
-    <tr>
-        <td align="center">
+    <p>
+        <strong>Dienst:</strong> {{ $signup->shift->title }}<br>
+        <strong>Datum:</strong> {{ $signup->shift->date->format('d-m-Y') }}<br>
+        <strong>Tijd:</strong>
+        {{ \Carbon\Carbon::parse($signup->shift->starts_at)->format('H:i') }}
+        –
+        {{ \Carbon\Carbon::parse($signup->shift->ends_at)->format('H:i') }}<br>
 
-            <table
-                width="100%"
-                cellpadding="0"
-                cellspacing="0"
-                style="
-                    max-width:600px;
-                    background:#ffffff;
-                    border-radius:16px;
-                    overflow:hidden;">
-                <tr>
-                    <td style="background:#2563eb; padding:25px 30px; color:white;">
-                        <strong style="font-size:22px;">
-                            PinoCrew
-                        </strong>
-                    </td>
-                </tr>
+        @if($signup->shift->location)
+            <strong>Locatie:</strong> {{ $signup->shift->location }}<br>
+        @endif
 
-                <tr>
-                    <td style="padding:30px; color:#334155; font-size:15px; line-height:1.7;">
-                        {!! nl2br(e($mailBody)) !!}
-                    </td>
-                </tr>
+        <strong>Team:</strong> {{ $signup->hockeyTeam->name }}
+    </p>
 
-                <tr>
-                    <td style="padding:20px 30px; background:#f8fafc; color:#64748b; font-size:12px;">
-                        Dit bericht is verzonden via PinoCrew.
-                    </td>
-                </tr>
-            </table>
+    <p>
+        We sturen je voor aanvang van de dienst nog een herinnering.
+    </p>
 
-        </td>
-    </tr>
-</table>
+    <p>
+        Tot dan en bedankt voor je hulp!
+    </p>
 
+    <p>
+        Met vriendelijke groet,<br>
+        <strong>PinoCrew</strong>
+    </p>
 </body>
 </html>

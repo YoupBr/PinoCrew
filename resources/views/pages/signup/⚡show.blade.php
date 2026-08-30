@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Mail\SignupConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class extends Component
 {
@@ -92,6 +94,9 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
             'email' => $validated['email'],
             'phone' => $validated['phone'],
         ]);
+
+        Mail::to($signup->email)
+    ->queue(new SignupConfirmation($signup));
 
         $this->submitted = true;
 
