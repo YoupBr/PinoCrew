@@ -64,7 +64,7 @@
                     class="mx-auto h-36 w-auto object-contain"/> </a>
 
             <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                Samen man we <span class="text-blue-400">Pinoké</span> mogelijk. </h1>
+                Samen maken we <span class="text-blue-400">Pinoké</span> mogelijk. </h1>
 
                     <p class="mt-6 text-lg leading-8 text-white/70 sm:text-xl sm:leading-9">
                         De plek voor de vrijwilligers van Pinoké om zich aan te melden voor
