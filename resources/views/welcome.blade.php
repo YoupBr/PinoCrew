@@ -64,7 +64,7 @@
                     class="mx-auto h-36 w-auto object-contain"/> </a>
 
             <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                Samen makenn we <span class="text-blue-400">Pinoké</span> mogelijk. </h1>
+                Samen man we <span class="text-blue-400">Pinoké</span> mogelijk. </h1>
 
                     <p class="mt-6 text-lg leading-8 text-white/70 sm:text-xl sm:leading-9">
                         De plek voor de vrijwilligers van Pinoké om zich aan te melden voor
@@ -76,8 +76,7 @@
                                 class="inline-flex items-center gap-2 rounded-xl bg-blue-600
                                        px-5 py-3 text-sm font-semibold text-white
                                        shadow-lg shadow-blue-600/20 transition
-                                       hover:bg-blue-500">
-                                Aanmelden voor een dienst
+                                       hover:bg-blue-500"> Aanmelden voor een dienst
 
                                 <svg class="h-4 w-4"
                                     viewBox="0 0 20 20"
