@@ -64,7 +64,7 @@
                     class="mx-auto h-36 w-auto object-contain"/> </a>
 
             <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                Samen maken we
+                Samen man we
                 <span class="text-blue-400">Pinoké</span>
                 mogelijk. </h1>
 
