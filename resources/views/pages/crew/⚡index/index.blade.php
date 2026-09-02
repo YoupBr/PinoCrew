@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-8">
 
     {{-- Header --}}
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-0">
         <div>
             <flux:heading size="xl">
                 Crew
@@ -12,15 +12,19 @@
             </flux:subheading>
         </div>
 
-        <div>
-            <flux:button
-                variant="primary"
-                icon="plus"
-                :href="route('signup')"
-                target="_blank"
-            >
-                Open inschrijfpagina
-            </flux:button>
+        <div class="ms-8">
+            <a href="{{ route('crew.print', [
+                'current_team' => request()->route('current_team'),
+                'search' => $search,
+                'shift' => $shiftFilter,
+                'team' => $teamFilter, ]) }}"
+                    target="_blank">
+                 <flux:button icon="printer" class="px-1">
+                      Print lijst
+                </flux:button>
+            </a>
+
+            <flux:button wire:click="exportCsv" icon="arrow-down-tray">Export CSV</flux:button>
         </div>
     </div>
 
@@ -129,7 +133,7 @@
                     <flux:select
                         wire:model.live="team"
                         label="Team"
-                    >
+                        >
                         <option value="">
                             Alle teams
                         </option>
@@ -144,8 +148,7 @@
 
                     <flux:select
                         wire:model.live="shift"
-                        label="Dienst"
-                    >
+                        label="Dienst">
                         <option value="">
                             Alle diensten
                         </option>
@@ -160,8 +163,7 @@
 
                     <flux:select
                         wire:model.live="sort"
-                        label="Sortering"
-                    >
+                        label="Sortering">
                         <option value="newest">
                             Nieuwste eerst
                         </option>
@@ -176,9 +178,7 @@
                     </flux:select>
 
                 </div>
-
             </div>
-
 
             @if (
                 $search !== '' ||
@@ -199,7 +199,6 @@
             @endif
 
         </div>
-
 
         {{-- Table --}}
         <div class="overflow-x-auto">

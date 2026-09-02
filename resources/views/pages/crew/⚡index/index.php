@@ -25,6 +25,9 @@ new #[Layout('layouts::app')] class extends Component
     #[Url]
     public string $sort = 'newest';
 
+    public string $shiftFilter = '';
+    public string $teamFilter = '';
+
     public function updatedSearch(): void
     {
         $this->resetPage();
@@ -170,5 +173,40 @@ new #[Layout('layouts::app')] class extends Component
                 $query->whereDate('date', '>=', today());
             })
             ->count();
+    }
+
+        public function exportCsv()
+        {
+        $signups = $this->signups;
+
+        return response()->streamDownload(function () use ($signups) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'Naam',
+                'E-mail',
+                'Telefoon',
+                'Team',
+                'Dienst',
+                'Datum',
+                'Tijd',
+            ], ';');
+
+            foreach ($signups as $signup) {
+                fputcsv($handle, [
+                    $signup->name,
+                    $signup->email,
+                    $signup->phone,
+                    $signup->hockeyTeam?->name,
+                    $signup->shift?->title,
+                    $signup->shift?->date?->format('d-m-Y'),
+                    $signup->shift
+                        ? $signup->shift->starts_at . ' - ' . $signup->shift->ends_at
+                        : '',
+                ], ';');
+            }
+
+            fclose($handle);
+        }, 'pinocrew-aanmeldingen.csv');
     }
 };

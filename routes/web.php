@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CrewPrintController;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -34,6 +35,11 @@ Route::prefix('{current_team}')
     // Mag later waarschijnlijk weg.
         Route::view('events', 'events')->name('events.index');
     });
+
+    // Printfunctie in crewscherm
+        Route::get('crew/print', CrewPrintController::class)
+    ->name('crew.print');
+
 
     Route::get('/dashboard', function () {
     $user = request()->user();
