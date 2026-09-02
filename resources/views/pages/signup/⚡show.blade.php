@@ -87,7 +87,7 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
             ],
         ]);
 
-        Signup::create([
+        $signup = Signup::create([
             'shift_id' => $this->shift->id,
             'hockey_team_id' => $validated['hockey_team_id'],
             'name' => $validated['name'],
