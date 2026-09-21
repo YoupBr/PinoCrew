@@ -24,4 +24,11 @@ class Signup extends Model
     {
         return $this->belongsTo(HockeyTeam::class);
     }
+
+    protected function casts(): array
+    {
+        return [
+            'reminder_sent_at' => 'datetime',
+        ];
+    }
 }
