@@ -46,15 +46,10 @@
                             background-color: #00257b;
                             padding: 28px 32px;">
                         <img
-                            src="{{ $message->embed(public_path('img/logo.png')) }}"
+                            src="{{ asset('img/logo.png') }}"
                             alt="PinoCrew"
                             width="160"
-                            style="
-                                display: block;
-                                width: 160px;
-                                max-width: 100%;
-                                height: auto;
-                                border: 0;">
+                            style="display:block; width:160px; max-width:100%; height:auto;">
                     </td>
                 </tr>
 
@@ -73,13 +68,11 @@
                         <p style="
                             margin: 0 0 16px 0;
                             font-size: 16px;
-                            line-height: 1.6;
-                        ">
+                            line-height: 1.6;">
                             Hoi {{ $signup->name }},
                         </p>
 
-                        <p style="
-                            margin: 0;
+                        <p style=" margin: 0;
                             font-size: 16px;
                             line-height: 1.6;
                             color: #4b5563;">
@@ -109,17 +102,14 @@
 
                             <tr>
                                 <td style="padding: 24px;">
-
-                                    <p style="
-                                        margin: 0 0 20px 0;
+                                    <p style=" margin: 0 0 20px 0;
                                         font-size: 12px;
                                         line-height: 1.4;
                                         font-weight: bold;
                                         text-transform: uppercase;
                                         letter-spacing: 1px;
                                         color: #64748b;">
-                                        Jouw inschrijving
-                                    </p>
+                                        Jouw inschrijving</p>
 
                                     <p style="margin: 0 0 14px 0; font-size: 15px; line-height: 1.5;">
                                         <strong style="color: #111827;">Dienst</strong><br>
@@ -183,8 +173,7 @@
                             Tot dan en bedankt voor je hulp!
                         </p>
 
-                        <p style="
-                            margin: 0;
+                        <p style="margin: 0;
                             font-size: 15px;
                             line-height: 1.6;">
                             Met vriendelijke groet,<br>
