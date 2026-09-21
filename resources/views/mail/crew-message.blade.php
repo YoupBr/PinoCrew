@@ -117,8 +117,7 @@
                                         font-weight: bold;
                                         text-transform: uppercase;
                                         letter-spacing: 1px;
-                                        color: #64748b;
-                                    ">
+                                        color: #64748b;">
                                         Jouw inschrijving
                                     </p>
 
@@ -160,11 +159,9 @@
                                             {{ $signup->hockeyTeam->name }}
                                         </span>
                                     </p>
-
                                 </td>
                             </tr>
                         </table>
-
                     </td>
                 </tr>
 
@@ -208,9 +205,7 @@
                             Deze e-mail is automatisch verzonden door PinoCrew.</p>
                     </td>
                 </tr>
-
             </table>
-
         </td>
     </tr>
 </table>
