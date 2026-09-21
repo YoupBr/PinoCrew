@@ -61,6 +61,15 @@
                         {{ __('Diensten') }}
                     </flux:sidebar.item>
 
+                    <flux:navlist.item
+                        icon="user-group"
+                        :href="route('hockey-teams.index', [
+                            'current_team' => request()->route('current_team'),])"
+                        :current="request()->routeIs('hockey-teams.index')"
+                        wire:navigate>
+                        Teams
+                    </flux:navlist.item>
+
                     <flux:sidebar.item
                     {{-- Mail --}}
                         icon="envelope"

@@ -33,13 +33,17 @@ Route::prefix('{current_team}')
     ->name('mail.index');
 
     // Mag later waarschijnlijk weg.
-        Route::view('events', 'events')->name('events.index');
+        Route::view('events', 'events')
+    ->name('events.index');
+
+
+        Route::livewire('teams', 'pages::hockey-teams.index')
+    ->name('hockey-teams.index');
     });
 
     // Printfunctie in crewscherm
         Route::get('crew/print', CrewPrintController::class)
     ->name('crew.print');
-
 
     Route::get('/dashboard', function () {
     $user = request()->user();
