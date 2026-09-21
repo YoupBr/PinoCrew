@@ -170,7 +170,8 @@
                             font-size: 15px;
                             line-height: 1.6;
                             color: #4b5563;">
-                            Voor annuleringen of wijzigingen kun je contact opnemen met de zaalhockeycommissie via <a href="mailto:zaalhockey@pinoke.nl" style="color: #1d4ed8; text-decoration: none;">
+                            Voor annuleringen of wijzigingen kun je contact opnemen met de zaalhockeycommissie via
+                            <a href="mailto:zaalhockey@pinoke.nl" style="color: #1d4ed8; text-decoration: none;">zaalhockey@pinoke.nl</a>
                         </p>
 
                         <p style="margin: 0 0 24px 0;
