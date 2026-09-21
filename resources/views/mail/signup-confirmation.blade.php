@@ -166,6 +166,13 @@
                             We sturen je voor aanvang van de dienst nog een herinnering.
                         </p>
 
+                         <p style="margin: 0 0 16px 0;
+                            font-size: 15px;
+                            line-height: 1.6;
+                            color: #4b5563;">
+                            Voor annuleringen of wijzigingen kun je contact opnemen met de zaalhockeycommissie via <a href="mailto:zaalhockey@pinoke.nl" style="color: #1d4ed8; text-decoration: none;">
+                        </p>
+
                         <p style="margin: 0 0 24px 0;
                             font-size: 15px;
                             line-height: 1.6;
@@ -177,7 +184,7 @@
                             font-size: 15px;
                             line-height: 1.6;">
                             Met vriendelijke groet,<br>
-                            <strong>PinoCrew</strong>
+                            <strong>De zaalhockeycommissie</strong>
                         </p>
 
                     </td>
@@ -191,7 +198,7 @@
                             background-color: #f8fafc;
                             border-top: 1px solid #e5e7eb;">
                         <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #94a3b8;">
-                            Deze e-mail is automatisch verzonden door PinoCrew.</p>
+                            Deze mail is automatisch verzonden door PinoCrew. - Powered by <b>MRY AV</b></p>
                     </td>
                 </tr>
             </table>
