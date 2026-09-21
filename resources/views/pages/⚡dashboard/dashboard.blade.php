@@ -2,6 +2,26 @@
 
     {{-- Header --}}
     <div>
+        @php
+            $hour = now()->hour;
+
+            $greeting = match (true) {
+                $hour < 12 => 'Goedemorgen',
+                $hour < 18 => 'Goedemiddag',
+                default => 'Goedenavond',
+            };
+        @endphp
+
+        <div class="mb-8">
+            <flux:heading size="xl">
+                {{ $greeting }}, {{ auth()->user()->name }} 👋
+            </flux:heading>
+
+            <flux:text class="mt-2">
+                Dit is de stand van zaken binnen PinoCrew.
+            </flux:text>
+        </div>
+
         <flux:heading size="xl">
             Dashboard
         </flux:heading>

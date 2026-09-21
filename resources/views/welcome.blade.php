@@ -96,9 +96,12 @@
 
         {{-- Footer --}}
         <footer class="relative z-10 border-t border-white/5">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-sm text-slate-500 lg:px-8">
-                <span>© {{ date('Y') }} Pinoké</span>
-                <span>PinoCrew</span>
+            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-0 text-sm text-slate-300 lg:px-8">
+                <span>© {{ date('Y') }} PinoCrew</span>
+                <div class="flex items-center gap-3">
+                    <span>Powered by</span>
+                    <img src="{{ asset('img/mrylogo.png') }}" alt="MRY-logo" class="h-28 w-auto object-contain"/>
+                 </div>
             </div>
         </footer>
 
