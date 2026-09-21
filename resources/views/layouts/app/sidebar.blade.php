@@ -82,6 +82,16 @@
                         {{ __('Mail') }}
                     </flux:sidebar.item>
 
+                    <flux:navlist.item
+                        icon="calendar-days"
+                        :href="route('calendar.index', [
+                            'current_team' => request()->route('current_team'),
+                        ])"
+                        :current="request()->routeIs('calendar.index')"
+                        wire:navigate>
+                        Agenda
+                    </flux:navlist.item>
+
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

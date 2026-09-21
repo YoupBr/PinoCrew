@@ -36,9 +36,11 @@ Route::prefix('{current_team}')
         Route::view('events', 'events')
     ->name('events.index');
 
-
         Route::livewire('teams', 'pages::hockey-teams.index')
     ->name('hockey-teams.index');
+
+        Route::livewire('agenda', 'pages::calendar.index')
+    ->name('calendar.index');
     });
 
     // Printfunctie in crewscherm
