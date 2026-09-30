@@ -10,6 +10,7 @@ new class extends Component
     public string $weekStart;
 
     public ?int $selectedShiftId = null;
+
     public bool $showShiftModal = false;
 
     public function mount(): void
@@ -65,8 +66,7 @@ new class extends Component
     {
         return $this->shifts
             ->filter(
-                fn (Shift $shift) =>
-                    Carbon::parse($shift->date)->isSameDay($day)
+                fn (Shift $shift) => Carbon::parse($shift->date)->isSameDay($day)
             );
     }
 

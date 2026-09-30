@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Mail\ShiftReminder;
 use App\Models\Signup;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -32,7 +31,7 @@ class SendShiftReminders extends Command
             ->whereNull('reminder_sent_at')
             ->whereHas('shift', function ($query) use ($from, $until) {
                 $query->whereRaw(
-                    "TIMESTAMP(date, starts_at) BETWEEN ? AND ?",
+                    'TIMESTAMP(date, starts_at) BETWEEN ? AND ?',
                     [
                         $from->format('Y-m-d H:i:s'),
                         $until->format('Y-m-d H:i:s'),

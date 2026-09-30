@@ -51,8 +51,7 @@ new #[Layout('layouts::app')] class extends Component
     {
         return $this->hockeyTeams
             ->filter(
-                fn ($team) =>
-                $team->signups_count >= $team->required_volunteers
+                fn ($team) => $team->signups_count >= $team->required_volunteers
             )
             ->count();
     }
@@ -62,8 +61,7 @@ new #[Layout('layouts::app')] class extends Component
     {
         return $this->hockeyTeams
             ->filter(
-                fn ($team) =>
-                $team->signups_count < $team->required_volunteers
+                fn ($team) => $team->signups_count < $team->required_volunteers
             )
             ->count();
     }

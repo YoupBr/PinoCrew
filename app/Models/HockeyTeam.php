@@ -23,6 +23,9 @@ class HockeyTeam extends Model
         ];
     }
 
+    /**
+     * @return HasMany<Signup, $this>
+     */
     public function signups(): HasMany
     {
         return $this->hasMany(Signup::class);

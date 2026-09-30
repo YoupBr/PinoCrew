@@ -63,7 +63,7 @@ class TeamPolicy
      */
     public function updateMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::UpdateMember);
+        return $user->ownsTeam($team);
     }
 
     /**
@@ -71,7 +71,7 @@ class TeamPolicy
      */
     public function removeMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::RemoveMember);
+        return $user->ownsTeam($team);
     }
 
     /**
