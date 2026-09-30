@@ -34,16 +34,13 @@ class CrewPrintController extends Controller
             ->orderBy('name')
             ->get();
 
+        $shift = $shiftId !== null ? Shift::find($shiftId) : null;
+        $hockeyTeam = $hockeyTeamId !== null ? HockeyTeam::find($hockeyTeamId) : null;
+
         return view('print.signups', [
             'signups' => $signups,
-
-            'shift' => $shiftId
-                ? Shift::find($shiftId)
-                : null,
-
-            'hockeyTeam' => $hockeyTeamId
-                ? HockeyTeam::find($hockeyTeamId)
-                : null,
+            'shift' => $shift,
+            'hockeyTeam' => $hockeyTeam,
         ]);
     }
 }

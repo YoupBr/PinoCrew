@@ -137,8 +137,8 @@ trait HasTeams
     {
         return $this->teams()
             ->get()
-            ->map(fn (Team $team) => ! $includeCurrent && $this->isCurrentTeam($team) ? null : $this->toUserTeam($team))
-            ->filter()
+            ->reject(fn (Team $team) => ! $includeCurrent && $this->isCurrentTeam($team))
+            ->map(fn (Team $team) => $this->toUserTeam($team))
             ->values();
     }
 
