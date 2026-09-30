@@ -26,6 +26,7 @@ new #[Layout('layouts::app')] class extends Component
     public string $sort = 'newest';
 
     public string $shiftFilter = '';
+
     public string $teamFilter = '';
 
     public function updatedSearch(): void
@@ -96,14 +97,12 @@ new #[Layout('layouts::app')] class extends Component
 
             ->when(
                 $this->team !== '',
-                fn ($query) =>
-                    $query->where('hockey_team_id', $this->team)
+                fn ($query) => $query->where('hockey_team_id', $this->team)
             )
 
             ->when(
                 $this->shift !== '',
-                fn ($query) =>
-                    $query->where('shift_id', $this->shift)
+                fn ($query) => $query->where('shift_id', $this->shift)
             )
 
             ->when(
@@ -175,8 +174,8 @@ new #[Layout('layouts::app')] class extends Component
             ->count();
     }
 
-        public function exportCsv()
-        {
+    public function exportCsv()
+    {
         $signups = $this->signups;
 
         return response()->streamDownload(function () use ($signups) {
@@ -201,7 +200,7 @@ new #[Layout('layouts::app')] class extends Component
                     $signup->shift?->title,
                     $signup->shift?->date?->format('d-m-Y'),
                     $signup->shift
-                        ? $signup->shift->starts_at . ' - ' . $signup->shift->ends_at
+                        ? $signup->shift->starts_at.' - '.$signup->shift->ends_at
                         : '',
                 ], ';');
             }

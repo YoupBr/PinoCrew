@@ -12,12 +12,19 @@ new #[Layout('layouts::app')] class extends Component
     public ?int $editingShiftId = null;
 
     public string $title = '';
+
     public string $description = '';
+
     public string $date = '';
+
     public string $starts_at = '';
+
     public string $ends_at = '';
+
     public string $location = '';
+
     public ?int $capacity = null;
+
     public bool $is_published = false;
 
     #[Computed]

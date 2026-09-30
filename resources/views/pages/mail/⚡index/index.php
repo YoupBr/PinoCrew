@@ -36,13 +36,11 @@ new #[Layout('layouts::app')] class extends Component
             ])
             ->when(
                 $this->shiftFilter !== '',
-                fn ($query) =>
-                    $query->where('shift_id', $this->shiftFilter)
+                fn ($query) => $query->where('shift_id', $this->shiftFilter)
             )
             ->when(
                 $this->teamFilter !== '',
-                fn ($query) =>
-                    $query->where('hockey_team_id', $this->teamFilter)
+                fn ($query) => $query->where('hockey_team_id', $this->teamFilter)
             )
             ->when($this->search !== '', function ($query) {
                 $search = '%'.$this->search.'%';
@@ -53,13 +51,11 @@ new #[Layout('layouts::app')] class extends Component
                         ->orWhere('email', 'like', $search)
                         ->orWhereHas(
                             'hockeyTeam',
-                            fn ($query) =>
-                                $query->where('name', 'like', $search)
+                            fn ($query) => $query->where('name', 'like', $search)
                         )
                         ->orWhereHas(
                             'shift',
-                            fn ($query) =>
-                                $query->where('title', 'like', $search)
+                            fn ($query) => $query->where('title', 'like', $search)
                         );
                 });
             })

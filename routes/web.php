@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\CrewPrintController;
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CrewPrintController;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -12,42 +12,44 @@ Route::livewire('inschrijven', 'pages::signup.index')
 Route::livewire('inschrijven/{shift}', 'pages::signup.show')
     ->name('signup.show');
 
+require __DIR__.'/settings.php';
+
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
 
-    // Dashboard in beheer
+        // Dashboard in beheer
         Route::livewire('dashboard', 'pages::dashboard')
-    ->name('dashboard');
+            ->name('dashboard');
 
-    // Crew in beheer
+        // Crew in beheer
         Route::livewire('crew', 'pages::crew.index')
-    ->name('crew.index');
+            ->name('crew.index');
 
-    // Shifts in beheer
+        // Shifts in beheer
         Route::livewire('shifts', 'pages::shifts.index')
-    ->name('shifts.index');
+            ->name('shifts.index');
 
-    // Mail in beheer
+        // Mail in beheer
         Route::livewire('mail', 'pages::mail.index')
-    ->name('mail.index');
+            ->name('mail.index');
 
-    // Mag later waarschijnlijk weg.
+        // Mag later waarschijnlijk weg.
         Route::view('events', 'events')
-    ->name('events.index');
+            ->name('events.index');
 
         Route::livewire('teams', 'pages::hockey-teams.index')
-    ->name('hockey-teams.index');
+            ->name('hockey-teams.index');
 
         Route::livewire('agenda', 'pages::calendar.index')
-    ->name('calendar.index');
+            ->name('calendar.index');
     });
 
-    // Printfunctie in crewscherm
-        Route::get('crew/print', CrewPrintController::class)
+// Printfunctie in crewscherm
+Route::get('crew/print', CrewPrintController::class)
     ->name('crew.print');
 
-    Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {
     $user = request()->user();
 
     if (! $user?->currentTeam) {
@@ -58,5 +60,3 @@ Route::prefix('{current_team}')
         'current_team' => $user->currentTeam->slug,
     ]);
 })->middleware(['auth', 'verified']);
-
-require __DIR__.'/settings.php';

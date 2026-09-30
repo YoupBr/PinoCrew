@@ -12,23 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shifts', function (Blueprint $table) {
-    $table->id();
+            $table->id();
 
-    $table->string('title');
-    $table->text('description')->nullable();
+            $table->string('title');
+            $table->text('description')->nullable();
 
-    $table->date('date');
-    $table->time('starts_at');
-    $table->time('ends_at')->nullable();
+            $table->date('date');
+            $table->time('starts_at');
+            $table->time('ends_at')->nullable();
 
-    $table->string('location')->nullable();
+            $table->string('location')->nullable();
 
-    $table->unsignedInteger('capacity')->nullable();
+            $table->unsignedInteger('capacity')->nullable();
 
-    $table->boolean('is_published')->default(false);
+            $table->boolean('is_published')->default(false);
 
-    $table->timestamps();
-});
+            $table->timestamps();
+        });
     }
 
     /**
