@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\HockeyTeam;
 use App\Models\Shift;
 use App\Models\Signup;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class CrewPrintController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): View
     {
         $shiftId = $request->integer('shift');
         $hockeyTeamId = $request->integer('team');

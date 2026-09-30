@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Concerns\ProfileValidationRules;
 use App\Enums\TeamRole;
 use App\Models\Team;
 use App\Models\User;
@@ -9,28 +10,20 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
+    use ProfileValidationRules;
+
+    /**
+     * @param  array<string, mixed>  $input
+     */
     public function create(array $input): User
     {
         Validator::make($input, [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
+            ...$this->profileRules(),
 
             'password' => [
                 'required',

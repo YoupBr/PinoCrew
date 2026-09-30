@@ -69,6 +69,9 @@ class User extends Authenticatable implements PasskeyUser
             : $initials;
     }
 
+    /**
+     * @return BelongsTo<HockeyTeam, $this>
+     */
     public function hockeyTeam(): BelongsTo
     {
         return $this->belongsTo(HockeyTeam::class);

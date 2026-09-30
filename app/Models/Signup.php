@@ -15,11 +15,17 @@ class Signup extends Model
         'phone',
     ];
 
+    /**
+     * @return BelongsTo<Shift, $this>
+     */
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);
     }
 
+    /**
+     * @return BelongsTo<HockeyTeam, $this>
+     */
     public function hockeyTeam(): BelongsTo
     {
         return $this->belongsTo(HockeyTeam::class);
