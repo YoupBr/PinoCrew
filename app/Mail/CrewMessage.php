@@ -26,8 +26,11 @@ class CrewMessage extends Mailable
 
     public function content(): Content
     {
+        /** @var view-string $view */
+        $view = 'mail.crew-message';
+
         return new Content(
-            view: 'mail.crew-message',
+            view: $view,
         );
     }
 }
