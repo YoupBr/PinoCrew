@@ -12,8 +12,8 @@ class CrewPrintController extends Controller
 {
     public function __invoke(Request $request): View
     {
-        $shiftId = $request->integer('shift');
-        $hockeyTeamId = $request->integer('team');
+        $shiftId = $request->query('shift') !== null ? $request->integer('shift') : null;
+        $hockeyTeamId = $request->query('team') !== null ? $request->integer('team') : null;
         $search = trim((string) $request->query('search'));
 
         $signups = Signup::query()

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\ShiftReminder;
 use App\Models\Signup;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 class SendShiftReminders extends Command
@@ -37,9 +38,8 @@ class SendShiftReminders extends Command
                     return false;
                 }
 
-                $shiftDateTime = $shift->date
-                    ->copy()
-                    ->setTimeFromTimeString($shift->starts_at);
+                $shiftDateTime = Carbon::parse((string) $shift->date)
+                    ->setTimeFromTimeString((string) $shift->starts_at);
 
                 return $shiftDateTime->between($from, $until);
             })
