@@ -15,8 +15,7 @@ class SignupConfirmation extends Mailable
 
     public function __construct(
         public Signup $signup,
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {

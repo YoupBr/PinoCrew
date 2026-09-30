@@ -9,7 +9,9 @@ new class extends Component
     public ?int $editingTeamId = null;
 
     public string $name = '';
+
     public int $required_volunteers = 0;
+
     public bool $active = true;
 
     public bool $showTeamModal = false;

@@ -27,7 +27,7 @@ class CrewPrintController extends Controller
             })
 
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%'.$search.'%');
             })
 
             ->orderBy('name')

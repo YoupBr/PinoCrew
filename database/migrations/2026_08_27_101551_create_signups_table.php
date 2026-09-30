@@ -12,23 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('signups', function (Blueprint $table) {
-    $table->id();
+            $table->id();
 
-    $table->foreignId('shift_id')
-        ->constrained()
-        ->cascadeOnDelete();
+            $table->foreignId('shift_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-    $table->foreignId('hockey_team_id')
-        ->constrained()
-        ->restrictOnDelete();
+            $table->foreignId('hockey_team_id')
+                ->constrained()
+                ->restrictOnDelete();
 
-    $table->string('name');
-    $table->string('email');
+            $table->string('name');
+            $table->string('email');
 
-    $table->timestamps();
+            $table->timestamps();
 
-    $table->index(['hockey_team_id', 'shift_id']);
-});
+            $table->index(['hockey_team_id', 'shift_id']);
+        });
     }
 
     /**

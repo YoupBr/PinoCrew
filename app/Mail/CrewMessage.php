@@ -15,8 +15,7 @@ class CrewMessage extends Mailable
     public function __construct(
         public string $mailSubject,
         public string $mailBody,
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {
