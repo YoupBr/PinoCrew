@@ -12,6 +12,8 @@ Route::livewire('inschrijven', 'pages::signup.index')
 Route::livewire('inschrijven/{shift}', 'pages::signup.show')
     ->name('signup.show');
 
+require __DIR__.'/settings.php';
+
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
@@ -58,5 +60,3 @@ Route::get('/dashboard', function () {
         'current_team' => $user->currentTeam->slug,
     ]);
 })->middleware(['auth', 'verified']);
-
-require __DIR__.'/settings.php';
