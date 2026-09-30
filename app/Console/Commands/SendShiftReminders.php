@@ -29,16 +29,21 @@ class SendShiftReminders extends Command
         $signups = Signup::query()
             ->with(['shift', 'hockeyTeam'])
             ->whereNull('reminder_sent_at')
-            ->whereHas('shift', function ($query) use ($from, $until) {
-                $query->whereRaw(
-                    'TIMESTAMP(date, starts_at) BETWEEN ? AND ?',
-                    [
-                        $from->format('Y-m-d H:i:s'),
-                        $until->format('Y-m-d H:i:s'),
-                    ]
-                );
+            ->get()
+            ->filter(function (Signup $signup) use ($from, $until) {
+                $shift = $signup->shift;
+
+                if (! $shift || ! $shift->date || ! $shift->starts_at) {
+                    return false;
+                }
+
+                $shiftDateTime = $shift->date
+                    ->copy()
+                    ->setTimeFromTimeString($shift->starts_at);
+
+                return $shiftDateTime->between($from, $until);
             })
-            ->get();
+            ->values();
 
         $this->info("{$signups->count()} reminder(s) gevonden.");
 

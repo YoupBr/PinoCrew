@@ -375,3 +375,44 @@ test('guests cannot access teams', function () {
 
     $response->assertRedirect(route('login'));
 });
+
+test('toUserTeams excludes the current team by default and includes it when requested', function () {
+    $user = User::factory()->create();
+    $personalTeam = $user->personalTeam();
+
+    $alphaTeam = Team::factory()->create(['name' => 'Alpha Team']);
+    $betaTeam = Team::factory()->create(['name' => 'Beta Team']);
+
+    $alphaTeam->members()->attach($user, ['role' => TeamRole::Owner->value]);
+    $betaTeam->members()->attach($user, ['role' => TeamRole::Member->value]);
+    $user->switchTeam($betaTeam);
+
+    $defaultTeams = $user->toUserTeams();
+
+    expect($defaultTeams->pluck('id')->sort()->values()->all())
+        ->toEqualCanonicalizing([$personalTeam->id, $alphaTeam->id]);
+
+    expect($defaultTeams->pluck('id'))->not->toContain($betaTeam->id);
+
+    $allTeams = $user->toUserTeams(true);
+
+    expect($allTeams->pluck('id')->sort()->values()->all())
+        ->toEqualCanonicalizing([$personalTeam->id, $alphaTeam->id, $betaTeam->id]);
+
+    expect($allTeams->firstWhere('id', $betaTeam->id)->isCurrent)->toBeTrue();
+});
+
+test('fallbackTeam ignores the excluded team and returns the alphabetically first remaining team', function () {
+    $user = User::factory()->create();
+
+    $zuluTeam = Team::factory()->create(['name' => 'Zulu Team']);
+    $betaTeam = Team::factory()->create(['name' => 'Beta Team']);
+    $alphaTeam = Team::factory()->create(['name' => 'Alpha Team']);
+
+    $zuluTeam->members()->attach($user, ['role' => TeamRole::Owner->value]);
+    $betaTeam->members()->attach($user, ['role' => TeamRole::Member->value]);
+    $alphaTeam->members()->attach($user, ['role' => TeamRole::Member->value]);
+
+    expect($user->fallbackTeam($zuluTeam)->id)->toBe($alphaTeam->id);
+    expect($user->fallbackTeam($alphaTeam)->id)->toBe($betaTeam->id);
+});

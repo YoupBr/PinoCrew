@@ -13,6 +13,7 @@ class Signup extends Model
         'name',
         'email',
         'phone',
+        'reminder_sent_at',
     ];
 
     /**
