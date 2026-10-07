@@ -13,11 +13,16 @@
 
            <flux:sidebar.header class="relative h-24">
                 <a  href="{{ route('dashboard', [
-                        'current_team' => request()->route('current_team'),
-                    ]) }}"
+                        'current_team' => request()->route('current_team'),]) }}"
                     class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     wire:navigate>
-                    <img src="{{ asset('img/logo.png') }}" alt="Pinoke Logo" style="height: 72px; width: auto;">
+                    <img src="{{ asset('img/logo-dark.png') }}"
+                        alt="PinoCrew"
+                        class="h-10 w-auto dark:hidden">
+
+                    <img src="{{ asset('img/logo-light.png') }}"
+                        alt="PinoCrew"
+                        class="hidden h-10 w-auto dark:block">
                 </a>
 
                 <flux:sidebar.collapse class="lg:hidden" />
@@ -163,7 +168,7 @@
                             type="submit"
                             icon="arrow-right-start-on-rectangle"
                             class="w-full cursor-pointer">
-                            
+
                             {{ __('Log out') }}
                         </flux:menu.item>
                     </form>
