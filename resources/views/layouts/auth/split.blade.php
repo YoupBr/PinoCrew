@@ -17,8 +17,7 @@
                 <a  href="{{ route('home') }}"
                     class="relative z-20 flex items-center gap-3 text-lg font-semibold"
                     wire:navigate >
-              
-                        <img src="{{ asset('img/logo-dark.png') }}" alt="PinoCrew" class="h-12 w-auto" />
+                        <img src="{{ asset('img/logo-light.png') }}" alt="PinoCrew" class="h-12 w-auto" />
                     <span>PinoCrew</span>
                 </a>
 

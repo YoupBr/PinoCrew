@@ -54,7 +54,7 @@
 
            <div class="mx-auto max-w-4xl text-center">
             <a href="{{ route('home') }}" class="mb-8 inline-block">
-                <img src="{{ asset('img/logo-dark.png') }}"
+                <img src="{{ asset('img/logo-light.png') }}"
                     alt="Pinoké logo"
                     class="mx-auto h-36 w-auto object-contain"/> </a>
 
