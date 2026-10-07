@@ -18,11 +18,11 @@
                     wire:navigate>
                     <img src="{{ asset('img/logo-dark.png') }}"
                         alt="PinoCrew"
-                        class="h-10 w-auto dark:hidden">
+                        class="h-18 w-auto dark:hidden">
 
                     <img src="{{ asset('img/logo-light.png') }}"
                         alt="PinoCrew"
-                        class="hidden h-10 w-auto dark:block">
+                        class="hidden h-18 w-auto dark:block">
                 </a>
 
                 <flux:sidebar.collapse class="lg:hidden" />
