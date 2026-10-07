@@ -15,8 +15,7 @@
 
         <div
             class="pointer-events-none absolute left-1/2 top-[-300px] h-[700px] w-[900px]
-                   -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]"
-        ></div>
+                   -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]"></div>
 
         <header class="absolute inset-x-0 top-0 z-20">
     <div class="mx-auto flex max-w-7xl items-center justify-end gap-3 px-6 py-6 lg:px-8">
@@ -33,7 +32,6 @@
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-
                 <button
                     type="submit"
                     class="rounded-lg border border-white/15 bg-white/5 px-4 py-2
@@ -48,7 +46,6 @@
                        text-sm font-medium text-white/80 transition
                        hover:bg-white/10 hover:text-white">Inloggen</a>
         @endauth
-
     </div>
 </header>
 
@@ -56,10 +53,8 @@
          <div class="mx-auto flex w-full max-w-7xl items-center px-6 py-16 lg:px-8">
 
            <div class="mx-auto max-w-4xl text-center">
-
             <a href="{{ route('home') }}" class="mb-8 inline-block">
-                <img
-                    src="{{ asset('img/logo.png') }}"
+                <img src="{{ asset('img/logo-dark.png') }}"
                     alt="Pinoké logo"
                     class="mx-auto h-36 w-auto object-contain"/> </a>
 
@@ -84,13 +79,9 @@
                                     stroke="currentColor"
                                     stroke-width="2" >
                                     <path d="M4 10h12M11 5l5 5-5 5"/>
-                                </svg>
-                            </a>
-
+                                </svg></a>
                     </div>
-
                 </div>
-
             </div>
         </main>
 

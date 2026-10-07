@@ -399,7 +399,7 @@
 
     <footer class="footer">
         <span>PinoCrew • pinocrew.nl</span>
-        <span>Intern crew-overzicht</span>
+        <span>Powered by MRY AV</span>
     </footer>
 
 </main>
