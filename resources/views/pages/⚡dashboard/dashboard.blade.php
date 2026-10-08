@@ -21,14 +21,6 @@
                 Dit is de stand van zaken binnen PinoCrew.
             </flux:text>
         </div>
-
-        <flux:heading size="xl">
-            Dashboard
-        </flux:heading>
-
-        <flux:subheading>
-            Overzicht van de vrijwilligersinschrijvingen.
-        </flux:subheading>
     </div>
 
     {{-- Statistieken --}}
