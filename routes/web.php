@@ -8,10 +8,11 @@ Route::view('/', 'welcome')->name('home');
 
 Route::livewire('inschrijven', 'pages::signup.index')
     ->name('signup');
-    ->name('privacy');
 
 Route::livewire('inschrijven/{shift}', 'pages::signup.show')
     ->name('signup.show');
+
+Route::view('privacy', 'privacy')
     ->name('privacy');
 
 require __DIR__.'/settings.php';
@@ -50,8 +51,6 @@ Route::prefix('{current_team}')
 // Printfunctie in crewscherm
 Route::get('crew/print', CrewPrintController::class)
     ->name('crew.print');
-
-    
 
 Route::get('/dashboard', function () {
     $user = request()->user();
