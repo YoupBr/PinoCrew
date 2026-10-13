@@ -8,7 +8,7 @@ Route::view('/', 'welcome')->name('home');
 
 Route::livewire('inschrijven', 'pages::signup.index')
     ->name('signup');
-    ->name('privacy')
+    ->name('privacy');
 
 Route::livewire('inschrijven/{shift}', 'pages::signup.show')
     ->name('signup.show');
