@@ -86,8 +86,7 @@
 
                 <section aria-labelledby="beveiliging" class="space-y-3">
                     <h2 id="beveiliging" class="text-xl font-semibold text-zinc-900 dark:text-white">7. Hoe beveiligen we je gegevens?</h2>
-                    <p>We nemen passende technische en organisatorische maatregelen om persoonsgegevens te beschermen. Deze omvatten [INVULLEN: de daadwerkelijk toegepaste maatregelen, zoals HTTPS, beperkte toegangsrechten, beveiligde wachtwoordopslag en onderhoud van de software].</p>
-                </section>
+                    <p>We nemen passende technische en organisatorische maatregelen om persoonsgegevens te beschermen.
 
                 <section aria-labelledby="rechten" class="space-y-3">
                     <h2 id="rechten" class="text-xl font-semibold text-zinc-900 dark:text-white">8. Welke rechten heb je?</h2>
