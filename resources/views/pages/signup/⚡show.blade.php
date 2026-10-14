@@ -421,7 +421,7 @@ new #[Layout('layouts.public', ['title' => 'Inschrijven | PinoCrew'])] class ext
                     <div>
                         <p class="text-sm text-slate-600">
                             Door je aan te melden ga je akkoord met de
-                            <a href="{{ route('privacy') }}" class="font-semibold text-blue-600 hover:text-blue-500">
+                            <a href="{{ route('legal.privacy') }}" class="font-semibold text-blue-600 hover:text-blue-500">
                                 privacyverklaring
                             </a>.
                         </p>
