@@ -12,7 +12,7 @@ Route::livewire('inschrijven', 'pages::signup.index')
 Route::livewire('inschrijven/{shift}', 'pages::signup.show')
     ->name('signup.show');
 
-Route::view('privacy', 'legal.privacy')
+Route::view('legal.privacy', 'legal.privacy')
     ->name('legal.privacy');
 
 require __DIR__.'/settings.php';
