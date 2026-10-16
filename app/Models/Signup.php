@@ -36,6 +36,8 @@ class Signup extends Model
     {
         return [
             'reminder_sent_at' => 'datetime',
+            'checked_in_at' => 'datetime',
+            'absence_confirmed_at' => 'datetime',
         ];
     }
 }

@@ -23,6 +23,12 @@
         </div>
     </div>
 
+    <a href="{{ route('attendance-report.index', ['current_team' => request()->route('current_team')]) }}" wire:navigate
+        class="rounded-2xl border border-zinc-200 p-5 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900">
+        <span class="font-semibold">Aanwezigheid per dienst →</span>
+        <p class="mt-1 text-sm text-zinc-500">Bekijk opkomst, ontbrekende aanmeldingen en de inzet per hockeyteam.</p>
+    </a>
+
     {{-- Statistieken --}}
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 

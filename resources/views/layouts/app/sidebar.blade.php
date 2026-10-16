@@ -76,6 +76,15 @@
                     </flux:navlist.item>
 
                     <flux:sidebar.item
+                    {{-- Opkomst - No Show --}}
+                        icon="clipboard-document-list"
+                        :href="route('attendance-report.index', ['current_team' => request()->route('current_team')])"
+                        :current="request()->routeIs('attendance-report.*')"
+                        wire:navigate>
+                        Opkomst - No Show
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item
                     {{-- Mail --}}
                         icon="envelope"
                         :href="route('mail.index', [
@@ -96,6 +105,14 @@
                         wire:navigate>
                         Agenda
                     </flux:navlist.item>
+
+                    <flux:sidebar.item
+                        icon="clipboard-document-check"
+                        :href="route('attendance-poster.index', ['current_team' => request()->route('current_team')])"
+                        :current="request()->routeIs('attendance-poster.*')"
+                        wire:navigate>
+                        QR-Poster
+                    </flux:sidebar.item>
 
                 </flux:sidebar.group>
             </flux:sidebar.nav>

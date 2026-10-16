@@ -1,10 +1,19 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendancePosterController;
+use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\CrewPrintController;
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
+
+Route::get('aanwezigheid', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('aanwezigheid/zoeken', [AttendanceController::class, 'search'])
+    ->middleware('throttle:attendance-search')->name('attendance.search');
+Route::post('aanwezigheid', [AttendanceController::class, 'store'])
+    ->middleware('throttle:attendance-store')->name('attendance.store');
 
 Route::livewire('inschrijven', 'pages::signup.index')
     ->name('signup');
@@ -20,6 +29,12 @@ require __DIR__.'/settings.php';
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
+
+        Route::view('qr-poster', 'attendance-poster')
+            ->name('attendance-poster.index');
+
+        Route::get('qr-poster/print', AttendancePosterController::class)
+            ->name('attendance-poster.print');
 
         // Dashboard in beheer
         Route::livewire('dashboard', 'pages::dashboard')
@@ -46,6 +61,11 @@ Route::prefix('{current_team}')
 
         Route::livewire('agenda', 'pages::calendar.index')
             ->name('calendar.index');
+
+        Route::get('aanwezigheid', [AttendanceReportController::class, 'index'])
+            ->name('attendance-report.index');
+        Route::patch('aanwezigheid/{signup}', [AttendanceReportController::class, 'update'])
+            ->name('attendance-report.update');
     });
 
 // Printfunctie in crewscherm
