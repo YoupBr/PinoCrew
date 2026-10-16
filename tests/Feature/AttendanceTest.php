@@ -17,7 +17,7 @@ function attendanceSignup(array $shiftAttributes = [], array $signupAttributes =
         'title' => 'Blaashal opbouw', 'date' => '2026-10-16',
         'starts_at' => '10:00:00', 'ends_at' => '12:00:00', 'is_published' => true,
     ], $shiftAttributes));
-    $team = HockeyTeam::create(['name' => 'Heren 3', 'active' => true]);
+    $team = HockeyTeam::create(['name' => 'Heren '.(HockeyTeam::count() + 3), 'active' => true]);
 
     return Signup::create(array_merge([
         'shift_id' => $shift->id, 'hockey_team_id' => $team->id,
@@ -26,21 +26,21 @@ function attendanceSignup(array $shiftAttributes = [], array $signupAttributes =
 }
 
 test('public attendance page is available without an account', function () {
-    $this->get(route('attendance.index'))->assertSee('Ben je er? Meld je aan.');
+    $this->get(route('attendance.index'))->assertSee('Je naam')->assertDontSee('attendance-team', false);
 });
 
-test('autocomplete exposes only limited matches from the selected team during check-in', function () {
+test('autocomplete finds names across teams without exposing contact details', function () {
     $this->travelTo(Carbon::parse('2026-10-16 10:30', 'Europe/Amsterdam'));
     $signup = attendanceSignup();
-    attendanceSignup([], ['name' => 'Youp Other']);
+    attendanceSignup([], ['name' => 'Someone Else']);
     attendanceSignup(['is_published' => false]);
     attendanceSignup(['date' => '2026-10-15']);
 
-    $response = $this->getJson(route('attendance.search', ['team' => $signup->hockey_team_id, 'name' => 'You']));
+    $response = $this->getJson(route('attendance.search', ['name' => 'You']));
 
     $response->assertJsonCount(1, 'matches')
-        ->assertJsonPath('matches.0.label', 'Youp Bronkhorst · Blaashal opbouw · 10:00')
-        ->assertDontSee('private@example.com')->assertDontSee('0612345678')->assertDontSee('Youp Other')
+        ->assertJsonPath('matches.0.label', 'Youp Bronkhorst · Heren 3 · Blaashal opbouw · 10:00')
+        ->assertDontSee('private@example.com')->assertDontSee('0612345678')->assertDontSee('Someone Else')
         ->assertHeader('Cache-Control', 'no-store, private');
 });
 
@@ -48,20 +48,23 @@ test('a matching signup is hidden before the check-in window', function () {
     $this->travelTo(Carbon::parse('2026-10-16 07:59', 'Europe/Amsterdam'));
     $signup = attendanceSignup();
 
-    $this->getJson(route('attendance.search', ['team' => $signup->hockey_team_id, 'name' => 'You']))
+    $this->getJson(route('attendance.search', ['name' => 'You']))
         ->assertJsonCount(0, 'matches');
 });
 
 test('search rejects short names and wildcard enumeration', function (string $name) {
-    $this->getJson(route('attendance.search', ['team' => 1, 'name' => $name]))
+    $this->getJson(route('attendance.search', ['name' => $name]))
         ->assertUnprocessable()->assertJsonValidationErrors('name');
 })->with(['short' => 'Yo', 'percent' => 'You%', 'underscore' => 'You_', 'slash' => 'You\\']);
 
 test('public check-in records the original arrival time only once', function () {
     $this->travelTo(Carbon::parse('2026-10-16 10:30', 'Europe/Amsterdam'));
     $signup = attendanceSignup();
-    $token = $this->getJson(route('attendance.search', ['team' => $signup->hockey_team_id, 'name' => 'You']))
+    $token = $this->getJson(route('attendance.search', ['name' => 'You']))
         ->json('matches.0.token');
+
+    expect($token)->toBeString()->not->toBeEmpty();
+    $this->withCookie(config('session.cookie'), session()->getId());
 
     $this->post(route('attendance.store'), ['token' => $token])->assertRedirect(route('attendance.index'));
     $arrival = $signup->fresh()->checked_in_at;
@@ -84,8 +87,11 @@ test('public check-in rejects forged selections', function () {
 test('public check-in rejects expired tokens and closed shifts', function (int $minutes) {
     $this->travelTo(Carbon::parse('2026-10-16 11:55', 'Europe/Amsterdam'));
     $signup = attendanceSignup();
-    $token = $this->getJson(route('attendance.search', ['team' => $signup->hockey_team_id, 'name' => 'You']))
+    $token = $this->getJson(route('attendance.search', ['name' => 'You']))
         ->json('matches.0.token');
+
+    expect($token)->toBeString()->not->toBeEmpty();
+    $this->withCookie(config('session.cookie'), session()->getId());
     $this->travel($minutes)->minutes();
 
     $this->postJson(route('attendance.store'), ['token' => $token])
@@ -111,7 +117,7 @@ test('overnight shifts can still check in after midnight', function () {
     $this->travelTo(Carbon::parse('2026-10-17 00:30', 'Europe/Amsterdam'));
     $signup = attendanceSignup(['starts_at' => '23:00:00', 'ends_at' => '01:00:00']);
 
-    $this->getJson(route('attendance.search', ['team' => $signup->hockey_team_id, 'name' => 'You']))
+    $this->getJson(route('attendance.search', ['name' => 'You']))
         ->assertJsonCount(1, 'matches');
 });
 
@@ -168,4 +174,35 @@ test('absence cannot be confirmed before a shift ends', function () {
     ]), ['action' => 'absent'])->assertSessionHasErrors('action');
 
     expect($signup->fresh()->absence_confirmed_at)->toBeNull();
+});
+
+test('surname search works without a team selection and distinguishes matching teams', function () {
+    $this->travelTo(Carbon::parse('2026-10-16 10:30', 'Europe/Amsterdam'));
+    $first = attendanceSignup();
+    $second = attendanceSignup();
+    $second->hockeyTeam->update(['name' => 'Dames 2']);
+
+    $this->getJson(route('attendance.search', ['name' => 'Bronkhorst']))
+        ->assertJsonCount(2, 'matches')
+        ->assertSee('Heren 3')->assertSee('Dames 2')
+        ->assertDontSee('private@example.com');
+});
+
+test('search explains why a found registration is outside the check-in window', function () {
+    $this->travelTo(Carbon::parse('2026-10-16 07:00', 'Europe/Amsterdam'));
+    attendanceSignup();
+
+    $this->getJson(route('attendance.search', ['name' => 'Bronkhorst']))
+        ->assertJsonCount(0, 'matches')
+        ->assertJsonPath('message', 'Je inschrijving is gevonden, maar aanmelden kan alleen vanaf twee uur vóór aanvang tot het einde van je dienst. Vraag de coördinator om hulp.');
+});
+
+test('name search never returns more than eight suggestions', function () {
+    $this->travelTo(Carbon::parse('2026-10-16 10:30', 'Europe/Amsterdam'));
+    for ($i = 0; $i < 9; $i++) {
+        attendanceSignup();
+    }
+
+    $this->getJson(route('attendance.search', ['name' => 'Bronkhorst']))
+        ->assertJsonCount(8, 'matches');
 });

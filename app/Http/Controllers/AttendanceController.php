@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HockeyTeam;
 use App\Models\Signup;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\View\View;
@@ -16,42 +15,40 @@ class AttendanceController extends Controller
 {
     public function index(): View
     {
-        return view('attendance', [
-            'teams' => HockeyTeam::query()->whereHas('signups.shift', fn ($query) => $query
-                ->where('is_published', true)
-                ->whereDate('date', '>=', now('Europe/Amsterdam')->subDay()->toDateString())
-                ->whereDate('date', '<=', now('Europe/Amsterdam')->toDateString()))
-                ->orderBy('name')->get(['id', 'name']),
-        ]);
+        return view('attendance');
     }
 
     public function search(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'team' => ['required', 'integer'],
             'name' => ['required', 'string', 'min:3', 'max:100', 'not_regex:/[%_\\\\]/'],
         ]);
 
-        $matches = Signup::query()
-            ->with('shift')
-            ->where('hockey_team_id', $data['team'])
-            ->where('name', 'like', trim($data['name']).'%')
+        $candidates = Signup::query()
+            ->with(['shift', 'hockeyTeam:id,name'])
+            ->where('name', 'like', '%'.trim($data['name']).'%')
             ->whereHas('shift', fn ($query) => $query
                 ->where('is_published', true)
                 ->whereDate('date', '>=', now('Europe/Amsterdam')->subDay()->toDateString())
                 ->whereDate('date', '<=', now('Europe/Amsterdam')->toDateString()))
-            ->orderBy('name')->limit(100)->get()
-            ->filter(fn (Signup $signup) => $signup->shift->isAttendanceOpen())->take(8)
+            ->orderBy('name')->limit(100)->get();
+
+        $matches = $candidates->filter(fn (Signup $signup) => $signup->shift->isAttendanceOpen())->take(8)
             ->map(fn (Signup $signup) => [
                 'token' => Crypt::encryptString(json_encode([
                     'signup' => $signup->id,
                     'expires' => now()->addMinutes(10)->timestamp,
                     'session' => hash('sha256', $request->session()->getId()),
                 ], JSON_THROW_ON_ERROR)),
-                'label' => $signup->name.' · '.$signup->shift->title.' · '.substr($signup->shift->starts_at, 0, 5),
+                'label' => $signup->name.' · '.$signup->hockeyTeam->name.' · '.$signup->shift->title.' · '.substr($signup->shift->starts_at, 0, 5),
             ])->values();
 
-        return response()->json(['matches' => $matches])->header('Cache-Control', 'no-store, private');
+        $message = $matches->isNotEmpty() ? '' : ($candidates->isNotEmpty()
+            ? 'Je inschrijving is gevonden, maar aanmelden kan alleen vanaf twee uur vóór aanvang tot het einde van je dienst. Vraag de coördinator om hulp.'
+            : 'Geen inschrijving gevonden voor vandaag. Probeer een ander deel van je naam of meld je bij de coördinator.');
+
+        return response()->json(['matches' => $matches, 'message' => $message])
+            ->header('Cache-Control', 'no-store, private');
     }
 
     public function store(Request $request): RedirectResponse
