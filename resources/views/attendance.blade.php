@@ -1,6 +1,5 @@
 <x-layouts::public title="Aanwezigheid | PinoCrew">
     <main class="mx-auto max-w-xl px-5 py-10 sm:py-16">
-        <a href="{{ route('home') }}"><img src="{{ asset('img/logo-dark.png') }}" alt="PinoCrew" class="mx-auto mb-8 h-16 w-auto"></a>
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <h1 class="text-3xl font-bold text-slate-900">Welkom!</h1>
             <p class="mt-3 text-slate-600">Kies je team en zoek je naam. Je meldt je aan voor een bestaande dienst van vandaag.</p>
@@ -60,6 +59,7 @@
                 </form>
             @endif
             <p class="mt-7 text-sm text-slate-500">We registreren je aankomst bij je inschrijving. <a class="underline" href="{{ route('legal.privacy') }}">Privacyverklaring</a></p>
+            <p class="mt-2 text-sm text-slate-500">Powered by <a class="underline" href="https://mryav.nl">MRY AV</a></p>
         </div>
     </main>
 </x-layouts::public>
