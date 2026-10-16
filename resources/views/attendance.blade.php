@@ -40,15 +40,20 @@
                         <p x-show="loading" x-cloak>Naam zoeken…</p>
                         <p x-text="message"></p>
                     </div>
-                    <fieldset x-show="matches.length" x-cloak class="space-y-2">
-                        <legend class="mb-2 font-medium text-slate-900">Selecteer je inschrijving</legend>
+                    <input type="hidden" name="token" :value="token">
+                    <div x-show="matches.length" x-cloak class="space-y-2" role="group" aria-label="Selecteer je inschrijving">
+                        <p class="mb-2 font-medium text-slate-900">Selecteer je inschrijving</p>
                         <template x-for="match in matches" :key="match.token">
-                            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-4 text-slate-900">
-                                <input type="radio" name="token" x-model="token" :value="match.token" required class="mt-1">
-                                <span x-text="match.label"></span>
-                            </label>
+                            <button type="button"
+                                @click="token = match.token"
+                                :aria-pressed="token === match.token"
+                                :class="token === match.token ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600' : 'border-slate-300 bg-white hover:bg-slate-50'"
+                                class="relative flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border p-4 text-left text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                <span class="pointer-events-none" x-text="match.label"></span>
+                                <span class="pointer-events-none shrink-0 text-sm font-semibold text-blue-700" x-show="token === match.token">Geselecteerd ✓</span>
+                            </button>
                         </template>
-                    </fieldset>
+                    </div>
                     @error('token')<p role="alert" class="text-sm text-red-700">{{ $message }}</p>@enderror
                     <button type="submit" :disabled="!token || loading" class="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">Ik ben aanwezig</button>
                     <noscript>Schakel JavaScript in of meld je bij de coördinator.</noscript>
