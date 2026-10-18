@@ -31,7 +31,7 @@
     <div class="toolbar">
         <button type="button" onclick="window.print()">Printen / opslaan als PDF</button>
         <a class="back" href="{{ route('attendance-poster.index', ['current_team' => request()->route('current_team')]) }}">Poster aanpassen</a>
-        <div class="hint">Kies A4, staand en schaal 100%. Schakel kop- en voetteksten uit. Kies ‘Opslaan als PDF’ om te downloaden. De aanwezigheidspagina wordt later gekoppeld.</div>
+        <div class="hint">Kies A4, staand en schaal 100%. Schakel kop- en voetteksten uit. Kies ‘Opslaan als PDF’ om te downloaden.</div>
     </div>
     <main class="paper">
         <img class="logo" src="{{ asset('img/logo-dark.png') }}" alt="PinoCrew">

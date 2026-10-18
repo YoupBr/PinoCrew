@@ -5,7 +5,6 @@
             <p class="mt-3 text-slate-600">Zoek je naam en selecteer de juiste dienst. Je meldt je aan voor een bestaande dienst van vandaag.</p>
             @if (session('attendance_success'))
                 <p role="status" class="mt-6 rounded-xl bg-green-50 p-4 text-green-800">{{ session('attendance_success') }}</p>
-                <a href="{{ route('attendance.index') }}" class="mt-5 inline-block underline">Volgende vrijwilliger aanmelden</a>
             @else
                 <form method="POST" action="{{ route('attendance.store') }}" class="mt-7 space-y-5"
                     x-data="{
