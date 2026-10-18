@@ -76,12 +76,12 @@
                     </flux:navlist.item>
 
                     <flux:sidebar.item
-                    {{-- Opkomst - No Show --}}
+                    {{-- Opkomst --}}
                         icon="clipboard-document-list"
                         :href="route('attendance-report.index', ['current_team' => request()->route('current_team')])"
                         :current="request()->routeIs('attendance-report.*')"
                         wire:navigate>
-                        Opkomst - No Show
+                        Opkomst
                     </flux:sidebar.item>
 
                     <flux:sidebar.item
