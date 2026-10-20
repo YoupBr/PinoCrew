@@ -198,7 +198,7 @@
                             background-color: #f8fafc;
                             border-top: 1px solid #e5e7eb;">
                         <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #94a3b8;">
-                            Deze mail is automatisch verzonden door PinoCrew. - Powered by <img src="{{ asset('img/mrylogo.png')}}"></p>
+                            Deze mail is automatisch verzonden door PinoCrew. - Powered by <b>MRY AV></b></p>
                     </td>
                 </tr>
             </table>
