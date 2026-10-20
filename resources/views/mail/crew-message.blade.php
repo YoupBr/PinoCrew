@@ -26,7 +26,7 @@
 
                     <tr>
                         <td style="padding:32px; font-size:16px; line-height:1.7; overflow-wrap:break-word;">
-                            {!! nl2br(e($body)) !!}
+                            {!! nl2br(e($mailBody)) !!}
                         </td>
                     </tr>
 
@@ -39,7 +39,6 @@
                                 Verstuurd via
                                 <a href="https://pinocrew.nl"
                                    style="color:#64748b; text-decoration:underline;">PinoCrew</a>
-                                ·
                                 <a href="https://mryav.nl"
                                    style="color:#64748b; text-decoration:underline;">Powered by MRY AV</a>
                             </p>
