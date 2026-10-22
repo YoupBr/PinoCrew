@@ -70,6 +70,7 @@ Route::prefix('{current_team}')
 
 // Printfunctie in crewscherm
 Route::get('crew/print', CrewPrintController::class)
+    ->middleware(['auth', 'verified', 'can:export-crew'])
     ->name('crew.print');
 
 Route::get('/dashboard', function () {

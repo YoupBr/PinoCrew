@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\HockeyTeam;
 use App\Models\Shift;
 use App\Models\Signup;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CrewPrintController extends Controller
 {
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request): Response
     {
         $shiftId = $request->query('shift') !== null ? $request->integer('shift') : null;
         $hockeyTeamId = $request->query('team') !== null ? $request->integer('team') : null;
@@ -37,10 +37,10 @@ class CrewPrintController extends Controller
         $shift = $shiftId !== null ? Shift::find($shiftId) : null;
         $hockeyTeam = $hockeyTeamId !== null ? HockeyTeam::find($hockeyTeamId) : null;
 
-        return view('print.signups', [
+        return response()->view('print.signups', [
             'signups' => $signups,
             'shift' => $shift,
             'hockeyTeam' => $hockeyTeam,
-        ]);
+        ])->header('Cache-Control', 'no-store, private');
     }
 }
