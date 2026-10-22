@@ -45,7 +45,7 @@
                         style="
                             background-color: #00257b;
                             padding: 28px 32px;">
-                        <img src="{{ asset('img/logo.png') }}"
+                        <img src="{{ asset('img/logo-light.png') }}"
                             alt="PinoCrew"
                             width="160"
                             style="display:block; width:160px; max-width:100%; height:auto;">
@@ -68,14 +68,14 @@
                             margin: 0 0 16px 0;
                             font-size: 16px;
                             line-height: 1.6;">
-                            Hoi {{ $signup->name }},
+                            Beste {{ $signup->name }},
                         </p>
 
                         <p style=" margin: 0;
                             font-size: 16px;
                             line-height: 1.6;
                             color: #4b5563;">
-                            Bedankt voor je inschrijving bij PinoCrew!
+                            Bedankt voor je inschrijving!
                             Je inschrijving is succesvol ontvangen.
                             Hieronder vind je de gegevens van je dienst.
                         </p>
@@ -198,7 +198,7 @@
                             background-color: #f8fafc;
                             border-top: 1px solid #e5e7eb;">
                         <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #94a3b8;">
-                            Deze mail is automatisch verzonden door PinoCrew. - Powered by <b>MRY AV></b></p>
+                            Deze mail is automatisch verzonden door PinoCrew. - Powered by <b>MRY AV</b></p>
                     </td>
                 </tr>
             </table>
